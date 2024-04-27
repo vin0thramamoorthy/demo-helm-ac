@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  labels:
+    app: nginx
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/managed-by: {{ quote .Release.Service }}
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote | upper | squote }}
+    app.kubernetes.io/name: {{ default "swatkats" .Values.releaseName }}
+    leading-whitespace: "   {{- .Chart.Name }}    sWatKats"
+    trailing-whitespace: "   {{ .Chart.Name -}}    sWatKats"
+    leadtrail-whitespace: "   {{- .Chart.Name -}}    sWatKats"
+    indenttest: "  {{- .Chart.Name  | indent 4 -}}  "
+    nindenttest: "  {{- .Chart.Name | nindent 4 -}}  "    
+spec:
+  replicas: {{ default "2" .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: ghcr.io/stacksimplify/kubenginx:4.0.0
+        ports:
+        - containerPort: 80
+        resources: 
+        {{- toYaml .Values.resources | nindent 10 }}
