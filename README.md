@@ -18,4 +18,6 @@ and .Arg1 .Arg2 = both true = true
 or .Arg1 .Arg2 = if any one is true = true
 12. if, else, eq, not
 13. Flow Control action with
+14. variable -- {{- $chartname := .Chart.Name | quote | upper -}}
+15. Flow Control action range
 
